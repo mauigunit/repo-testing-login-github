@@ -1,6 +1,7 @@
 import passport from 'passport'
 import GithubStrategy from 'passport-github2'
 import userService from '../dao/models/users.js'
+import config from './config.js';
 
 const inicializePassport = () => {
     passport.serializeUser((user, done) => {
@@ -13,9 +14,9 @@ const inicializePassport = () => {
     })
 
     passport.use('github', new GithubStrategy({
-        clientID: process.env.CLIENT_ID,
-        clientSecret: process.env.CLIENT_SECRET,
-        callbackURL: process.env.CLIENT_URL,
+        clientID: config.CLIENT_ID,
+        clientSecret: config.CLIENT_SECRET,
+        callbackURL: config.CLIENT_URL,
         scope: ['user:email']
     }, async (accessToken, refreshToken, profile, done) => {
         try {
