@@ -42,8 +42,10 @@ const registrarinicioController = async (req, res) => {
 const registrarController = async (req, res) => {
     try {
         const { firstname, lastname, email, password, rol } = req.body;
-        let passHash = createHash(password);
-        const result = await registerUser(firstname, lastname, email, passHash, rol);
+        const passHash = createHash(password);
+        const newuser = { firstname, lastname, email, password: passHash, rol }
+        console.log(newuser);
+        const result = await registerUser(newuser);
         if(result)
             res.json({status:"success", message:"Registrado correctamente"});
         else

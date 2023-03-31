@@ -2,6 +2,8 @@ import passport from 'passport'
 import GithubStrategy from 'passport-github2'
 import userService from '../dao/models/users.js'
 import config from './config.js';
+import { registerUser, loginUser, getUserId } from '../services/login.service.js'
+
 
 const inicializePassport = () => {
     passport.serializeUser((user, done) => {
@@ -9,7 +11,7 @@ const inicializePassport = () => {
     });
 
     passport.deserializeUser(async (id , done) => {
-        let user = await userService.findOne({_id:id});
+        let user = await getUserId({_id:id});
         done(null, user);
     })
 
@@ -21,16 +23,16 @@ const inicializePassport = () => {
     }, async (accessToken, refreshToken, profile, done) => {
         try {
             console.log(profile);
-            let user = await userService.findOne({ email: profile.emails[0].value })
+            let user = await loginUser(profile.emails[0].value)
             if(!user) {
                 let newUser = {
-                    first_name: profile._json.login,
-                    last_name: "",
-                    age: 28,
+                    firstname: profile._json.login,
+                    lastname: "Github",
                     email: profile.emails[0].value,
-                    password:""
+                    password:"xxxxxxxxxxx",
+                    rol:"USER"
                 }
-                let result = await userService.create(newUser);
+                let result = await registerUser(newUser);
                 done(null, result);
             } else {
                 done(null, user);

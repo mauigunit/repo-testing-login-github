@@ -3,10 +3,8 @@ import {usersCollection, usersSchema} from '../dao/models/users.models.js';
 
 const userModel = new containerMongoDB(usersCollection, usersSchema);
 
-const registerUser = async (firstname, lastname, email, password, rol) => {
-    const registro = { firstname, lastname, email, password, rol };
-    console.log(registro);
-    let result = await userModel.registerUser(registro);
+const registerUser = async (newUser) => {
+    let result = await userModel.registerUser(newUser);
     return result
 }
 
@@ -16,4 +14,9 @@ const loginUser = async (email) => {
     return result
 }
 
-export {registerUser, loginUser};
+const getUserId = async (userId) => {
+    let result = await userModel.getUserId(userId);
+    return result
+}
+
+export {registerUser, loginUser, getUserId};

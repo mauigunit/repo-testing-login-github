@@ -1,10 +1,4 @@
 import mongoose from 'mongoose'
-/*mongoose.connect('mongodb+srv://coderhouse:coderEcom.45*794@ecommerce.7wg20uz.mongodb.net/ecommerce?retryWrites=true&w=majority', error => {
-    if(error) {
-        console.log(`cannot connect to db: ${error}`);
-        process.exit();
-    }
-});*/
 
 mongoose.connect('mongodb://127.0.0.1:27017/ecommerce', error => {
     if(error) {
@@ -90,6 +84,11 @@ class containerMongoDB {
     }
 
     async searchUser(search) {
+        let result = await this.collections.findOne(search);
+        return result;
+    }
+
+    async getUserId(search) {
         let result = await this.collections.findOne(search);
         return result;
     }
